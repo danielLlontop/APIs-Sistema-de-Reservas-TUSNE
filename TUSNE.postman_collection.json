@@ -1,0 +1,1104 @@
+{
+	"info": {
+		"_postman_id": "597da511-b52f-4c9d-8587-2737b06d0ff2",
+		"name": "TUSNE",
+		"description": "Coleccion de Pruebas de servicio para las APIs del Sistema de Reservas TUSNE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38045551"
+	},
+	"item": [
+		{
+			"name": "Ambientes",
+			"item": [
+				{
+					"name": "Obtener Todos los ambientes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"// Validar que los campos están presentes\r",
+									"pm.test(\"Los campos requeridos están presentes\", function () {\r",
+									"    const jsonData = pm.response.json(); // Parsear la respuesta como JSON\r",
+									"    pm.expect(jsonData).to.be.an(\"array\"); // Validar que la respuesta es un array\r",
+									"\r",
+									"    // Validar que cada objeto en el array tiene los campos requeridos\r",
+									"    jsonData.forEach((item) => {\r",
+									"        pm.expect(item).to.have.property(\"id\");\r",
+									"        pm.expect(item).to.have.property(\"denominacion_ambi\");\r",
+									"        pm.expect(item).to.have.property(\"capacidad_ambi\");\r",
+									"        pm.expect(item).to.have.property(\"direccion_ambi\");\r",
+									"        pm.expect(item).to.have.property(\"precioporhora_ambi\");\r",
+									"        pm.expect(item).to.have.property(\"fecha_creacion_ambi\");\r",
+									"        pm.expect(item).to.have.property(\"estado_ambi\");\r",
+									"        //Validacion del formato de fecha\r",
+									"       const regexFecha = /^\\d{2}-\\d{2}-\\d{4}$/;\r",
+									"       //validacion para la creacion\r",
+									"       if (item.fecha_creacion_ambi) {\r",
+									"            pm.expect(item.fecha_creacion_ambi).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validacion para la actualizacion\r",
+									"        if (item.fecha_actualizacion_ambi) {\r",
+									"            pm.expect(item.fecha_actualizacion_ambi).to.match(regexFecha);\r",
+									"        }\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/ambientes/",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"ambientes",
+								""
+							]
+						},
+						"description": "Peticion que permite obtener todos los ambientes"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Ambiente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 1 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"//Validar el contenido de la respuesta\r",
+									"const requestBody = pm.request.body.raw ? JSON.parse(pm.request.body.raw) : {};\r",
+									"pm.test(\"El cuerpo de la solicitud contiene los campos requeridos\", function () {\r",
+									"    pm.expect(requestBody).to.have.property(\"denominacion_ambi\");\r",
+									"    pm.expect(requestBody).to.have.property(\"capacidad_ambi\");\r",
+									"    pm.expect(requestBody).to.have.property(\"direccion_ambi\");\r",
+									"    pm.expect(requestBody).to.have.property(\"precioporhora_ambi\");\r",
+									"    pm.expect(requestBody).to.have.property(\"estado_ambi\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"denominacion_ambi\": \"Canchita Skate 7\",\r\n    \"capacidad_ambi\": 100,\r\n    \"direccion_ambi\": \"Calle 123\",\r\n    \"precioporhora_ambi\": 60.0,\r\n    \"estado_ambi\": \"Activo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/ambientes/",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"ambientes",
+								""
+							]
+						},
+						"description": "Peticion que permite crear un ambiente"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Ambiente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"//Validar el contenido de la respuesta\r",
+									"const requestBody = pm.request.body.raw ? JSON.parse(pm.request.body.raw) : {};\r",
+									"pm.test(\"El cuerpo de la solicitud contiene los campos requeridos\", function () {\r",
+									"    pm.expect(requestBody).to.have.property(\"id\");\r",
+									"    pm.expect(requestBody).to.have.property(\"denominacion_ambi\");\r",
+									"    pm.expect(requestBody).to.have.property(\"capacidad_ambi\");\r",
+									"    pm.expect(requestBody).to.have.property(\"direccion_ambi\");\r",
+									"    pm.expect(requestBody).to.have.property(\"precioporhora_ambi\");\r",
+									"    pm.expect(requestBody).to.have.property(\"estado_ambi\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"642695e7-5a9d-4158-a2e0-550e3840c2bc\",\r\n    \"denominacion_ambi\": \"Canchita Skate 5\",\r\n    \"capacidad_ambi\": 50,\r\n    \"direccion_ambi\": \"Calle 123\",\r\n    \"precioporhora_ambi\": 70.0,\r\n    \"estado_ambi\": \"Activo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/ambientes/",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"ambientes",
+								""
+							]
+						},
+						"description": "Peticion que permite actualizar ambiente pasandole el id en el body"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Ambiente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"//Validar mensaje de respuesta\r",
+									"pm.test(\"El mensaje de respuesta es correcto\", function () {\r",
+									"    pm.response.to.have.body(\"Registro Eliminado\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/ambientes/fbbc35a5-1832-449f-8854-052f250eebd2",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"ambientes",
+								"fbbc35a5-1832-449f-8854-052f250eebd2"
+							]
+						},
+						"description": "Peticion que permite eliminar un ambiente pasandole el id en la url"
+					},
+					"response": []
+				}
+			],
+			"description": "Contiene las peticiones a la API que permite la gestion del modulo de ambientes"
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Obtener Usuarios",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"// Validar que los campos están presentes\r",
+									"pm.test(\"Los campos requeridos están presentes\", function () {\r",
+									"    const jsonData = pm.response.json(); // Parsear la respuesta como JSON\r",
+									"    pm.expect(jsonData).to.be.an(\"array\"); // Validar que la respuesta es un array\r",
+									"\r",
+									"    // Validar que cada objeto en el array tiene los campos requeridos\r",
+									"    jsonData.forEach((item) => {\r",
+									"        pm.expect(item).to.have.property(\"id\");\r",
+									"        pm.expect(item).to.have.property(\"rolId\");\r",
+									"        pm.expect(item).to.have.property(\"nombrePers\");\r",
+									"        pm.expect(item).to.have.property(\"dniPers\");\r",
+									"        pm.expect(item).to.have.property(\"cargoPers\");\r",
+									"        pm.expect(item).to.have.property(\"denominacionPers\");\r",
+									"        pm.expect(item).to.have.property(\"asociacionPers\");\r",
+									"         pm.expect(item).to.have.property(\"apellido_patPers\");\r",
+									"          pm.expect(item).to.have.property(\"apellido_matPers\");\r",
+									"           pm.expect(item).to.have.property(\"correoPers\");\r",
+									"            pm.expect(item).to.have.property(\"telefonoPers\");\r",
+									"            pm.expect(item).to.have.property(\"fecha_registroPers\");\r",
+									"            pm.expect(item).to.have.property(\"fecha_actualizacionPers\");\r",
+									"            pm.expect(item).to.have.property(\"clavePers\");\r",
+									"            pm.expect(item).to.have.property(\"estadoPers\");\r",
+									"             pm.expect(item).to.have.property(\"nombre_rol\");\r",
+									"              pm.expect(item).to.have.property(\"codigoBoletaPers\");\r",
+									"        //Validacion del formato de fecha\r",
+									"       const regexFecha = /^\\d{2}-\\d{2}-\\d{4}$/;\r",
+									"       //validacion para la creacion\r",
+									"       if (item.fecha_registroPers) {\r",
+									"            pm.expect(item.fecha_registroPers).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validacion para la actualizacion\r",
+									"        if (item.fecha_actualizacionPers) {\r",
+									"            pm.expect(item.fecha_actualizacionPers).to.match(regexFecha);\r",
+									"        }\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/personas/",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"personas",
+								""
+							]
+						},
+						"description": "Peticion que permite obtener todos los usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener usuarios por Rol",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"// Validar que los campos están presentes\r",
+									"pm.test(\"Los campos requeridos están presentes\", function () {\r",
+									"    const jsonData = pm.response.json(); // Parsear la respuesta como JSON\r",
+									"    pm.expect(jsonData).to.be.an(\"array\"); // Validar que la respuesta es un array\r",
+									"\r",
+									"    // Validar que cada objeto en el array tiene los campos requeridos\r",
+									"    jsonData.forEach((item) => {\r",
+									"        pm.expect(item).to.have.property(\"id\");\r",
+									"        pm.expect(item).to.have.property(\"rolId\");\r",
+									"        pm.expect(item).to.have.property(\"nombrePers\");\r",
+									"        pm.expect(item).to.have.property(\"dniPers\");\r",
+									"        pm.expect(item).to.have.property(\"cargoPers\");\r",
+									"        pm.expect(item).to.have.property(\"denominacionPers\");\r",
+									"        pm.expect(item).to.have.property(\"asociacionPers\");\r",
+									"         pm.expect(item).to.have.property(\"apellido_patPers\");\r",
+									"          pm.expect(item).to.have.property(\"apellido_matPers\");\r",
+									"           pm.expect(item).to.have.property(\"correoPers\");\r",
+									"            pm.expect(item).to.have.property(\"telefonoPers\");\r",
+									"            pm.expect(item).to.have.property(\"fecha_registroPers\");\r",
+									"            pm.expect(item).to.have.property(\"fecha_actualizacionPers\");\r",
+									"            pm.expect(item).to.have.property(\"clavePers\");\r",
+									"            pm.expect(item).to.have.property(\"estadoPers\");\r",
+									"             pm.expect(item).to.have.property(\"nombre_rol\");\r",
+									"              pm.expect(item).to.have.property(\"codigoBoletaPers\");\r",
+									"        //Validacion del formato de fecha\r",
+									"       const regexFecha = /^\\d{2}-\\d{2}-\\d{4}$/;\r",
+									"       //validacion para la creacion\r",
+									"       if (item.fecha_registroPers) {\r",
+									"            pm.expect(item.fecha_registroPers).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validacion para la actualizacion\r",
+									"        if (item.fecha_actualizacionPers) {\r",
+									"            pm.expect(item.fecha_actualizacionPers).to.match(regexFecha);\r",
+									"        }\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/personas/rol",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"personas",
+								"rol"
+							]
+						},
+						"description": "Peticion que permite obtener todos los usuarios ordenados por ROL"
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar Usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"// Validar que los campos están presentes\r",
+									"   pm.test(\"Los campos requeridos están presentes\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    // Validar que cada objeto en el array tiene los campos requeridos\r",
+									"        pm.expect(jsonData).to.have.property(\"id\");\r",
+									"        pm.expect(jsonData).to.have.property(\"rolId\");\r",
+									"        pm.expect(jsonData).to.have.property(\"nombrePers\");\r",
+									"        pm.expect(jsonData).to.have.property(\"dniPers\");\r",
+									"        pm.expect(jsonData).to.have.property(\"cargoPers\");\r",
+									"        pm.expect(jsonData).to.have.property(\"denominacionPers\");\r",
+									"        pm.expect(jsonData).to.have.property(\"asociacionPers\");\r",
+									"         pm.expect(jsonData).to.have.property(\"apellido_patPers\");\r",
+									"          pm.expect(jsonData).to.have.property(\"apellido_matPers\");\r",
+									"           pm.expect(jsonData).to.have.property(\"correoPers\");\r",
+									"            pm.expect(jsonData).to.have.property(\"telefonoPers\");\r",
+									"            pm.expect(jsonData).to.have.property(\"fecha_registroPers\");\r",
+									"            pm.expect(jsonData).to.have.property(\"fecha_actualizacionPers\");\r",
+									"            pm.expect(jsonData).to.have.property(\"clavePers\");\r",
+									"            pm.expect(jsonData).to.have.property(\"estadoPers\");\r",
+									"             pm.expect(jsonData).to.have.property(\"nombre_rol\");\r",
+									"              pm.expect(jsonData).to.have.property(\"codigoBoletaPers\");\r",
+									"        //Validacion del formato de fecha\r",
+									"       const regexFecha = /^\\d{2}-\\d{2}-\\d{4}$/;\r",
+									"       //validacion para la creacion\r",
+									"       if (jsonData.fecha_registroPers) {\r",
+									"            pm.expect(jsonData.fecha_registroPers).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validacion para la actualizacion\r",
+									"        if (jsonData.fecha_actualizacionPers) {\r",
+									"            pm.expect(jsonData.fecha_actualizacionPers).to.match(regexFecha);\r",
+									"        }\r",
+									"  });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rolId\": \"c8d4e2f5-414c-41b5-be94-6fa80930736a\",\r\n  \"nombrePers\": \"ALEJANDRO\",\r\n  \"dniPers\": \"78720901\",\r\n  \"cargoPers\": \"Jefe\",\r\n  \"denominacionPers\": \"Pesona Juridica\",\r\n  \"asociacionPers\": \"Textileria\",\r\n  \"apellido_patPers\": \"PEREZ\",\r\n  \"apellido_matPers\": \"GOMEZ\",\r\n  \"correoPers\": \"mauricio@gmail.com\",\r\n  \"telefonoPers\": 975423641,\r\n  \"fecha_registroPers\": \"2024-12-06 15:16:09\",\r\n  \"fecha_actualizacionPers\": \"2024-12-06 15:16:09\",\r\n  \"clavePers\": \"123456\",\r\n  \"estadoPers\": \"Activo\",\r\n  \"nombre_rol\": \"Administrador\",\r\n  \"codigoBoletaPers\": \"A2732\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/personas/",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"personas",
+								""
+							]
+						},
+						"description": "Peticion que permite registrar un usuario"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"// Validar que los campos están presentes\r",
+									"pm.test(\"Los campos requeridos están presentes\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"codigo\");\r",
+									"    pm.expect(jsonData).to.have.property(\"mensaje\");\r",
+									"    pm.expect(jsonData).to.have.property(\"token\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": \"carlos@gmail.com\",\r\n    \"clave\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/personas/login",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"personas",
+								"login"
+							]
+						},
+						"description": "Peticion para logeo de usuario"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"// Validar que los campos están presentes\r",
+									"   pm.test(\"Los campos requeridos están presentes\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    // Validar que cada objeto en el array tiene los campos requeridos\r",
+									"        pm.expect(jsonData).to.have.property(\"id\");\r",
+									"        pm.expect(jsonData).to.have.property(\"rolId\");\r",
+									"        pm.expect(jsonData).to.have.property(\"nombrePers\");\r",
+									"        pm.expect(jsonData).to.have.property(\"dniPers\");\r",
+									"        pm.expect(jsonData).to.have.property(\"cargoPers\");\r",
+									"        pm.expect(jsonData).to.have.property(\"denominacionPers\");\r",
+									"        pm.expect(jsonData).to.have.property(\"asociacionPers\");\r",
+									"         pm.expect(jsonData).to.have.property(\"apellido_patPers\");\r",
+									"          pm.expect(jsonData).to.have.property(\"apellido_matPers\");\r",
+									"           pm.expect(jsonData).to.have.property(\"correoPers\");\r",
+									"            pm.expect(jsonData).to.have.property(\"telefonoPers\");\r",
+									"            pm.expect(jsonData).to.have.property(\"fecha_registroPers\");\r",
+									"            pm.expect(jsonData).to.have.property(\"fecha_actualizacionPers\");\r",
+									"            pm.expect(jsonData).to.have.property(\"clavePers\");\r",
+									"            pm.expect(jsonData).to.have.property(\"estadoPers\");\r",
+									"             pm.expect(jsonData).to.have.property(\"nombre_rol\");\r",
+									"              pm.expect(jsonData).to.have.property(\"codigoBoletaPers\");\r",
+									"        //Validacion del formato de fecha\r",
+									"       const regexFecha = /^\\d{2}-\\d{2}-\\d{4}$/;\r",
+									"       //validacion para la creacion\r",
+									"       if (jsonData.fecha_registroPers) {\r",
+									"            pm.expect(jsonData.fecha_registroPers).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validacion para la actualizacion\r",
+									"        if (jsonData.fecha_actualizacionPers) {\r",
+									"            pm.expect(jsonData.fecha_actualizacionPers).to.match(regexFecha);\r",
+									"        }\r",
+									"  });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n        \"id\": \"4847b4f3-a84d-4594-b20c-455d073c2cde\",\r\n        \"rolId\": \"68339f84-a3eb-432b-b627-dc28b6d9c98e\",\r\n        \"nombrePers\": \"Jairo\",\r\n        \"dniPers\": \"41414141\",\r\n        \"cargoPers\": \"O9090\",\r\n        \"denominacionPers\": \"Persona Natura\",\r\n        \"asociacionPers\": \"\",\r\n        \"apellido_patPers\": \"Concha\",\r\n        \"apellido_matPers\": \"Zapata\",\r\n        \"correoPers\": \"jairo@gmail.com\",\r\n        \"telefonoPers\": 912121213,\r\n        \"fecha_registroPers\": \"20-11-2024\",\r\n        \"fecha_actualizacionPers\": \"21-11-2024\",\r\n        \"clavePers\": \"carlos\",\r\n        \"estadoPers\": \"TI\",\r\n        \"nombre_rol\": null,\r\n        \"codigoBoletaPers\": null\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/personas/",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"personas",
+								""
+							]
+						},
+						"description": "Peticion que permite actualizar usuario pasando el id en el body"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"//Validar mensaje de respuesta\r",
+									"pm.test(\"El mensaje de respuesta es correcto\", function () {\r",
+									"    pm.response.to.have.body(\"Registro Eliminado\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "id",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/personas/ee550587-02e0-45d8-bd59-6b34eb648f93",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"personas",
+								"ee550587-02e0-45d8-bd59-6b34eb648f93"
+							]
+						},
+						"description": "Peticion que permite eliminar un usuario pasandole el id en la url"
+					},
+					"response": []
+				}
+			],
+			"description": "Contiene las peticiones a la API que permite la gestion del modulo de usuarios"
+		},
+		{
+			"name": "Reservas",
+			"item": [
+				{
+					"name": "Obtener Reservas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"// Validar que los campos están presentes\r",
+									"pm.test(\"Los campos requeridos están presentes\", function () {\r",
+									"    const jsonData = pm.response.json(); // Parsear la respuesta como JSON\r",
+									"    pm.expect(jsonData).to.be.an(\"array\"); // Validar que la respuesta es un array\r",
+									"\r",
+									"    // Validar que cada objeto en el array tiene los campos requeridos\r",
+									"    jsonData.forEach((item) => {\r",
+									"        pm.expect(item).to.have.property(\"id\");\r",
+									"        pm.expect(item).to.have.property(\"personaId\");\r",
+									"        pm.expect(item).to.have.property(\"ambienteId\");\r",
+									"        pm.expect(item).to.have.property(\"fechaReserva\");\r",
+									"        pm.expect(item).to.have.property(\"fechaSolicitud\");\r",
+									"        pm.expect(item).to.have.property(\"fechaActualizacion\");\r",
+									"        pm.expect(item).to.have.property(\"totalRese\");\r",
+									"         pm.expect(item).to.have.property(\"pago_estadoRese\");\r",
+									"          pm.expect(item).to.have.property(\"horaInicio\");\r",
+									"           pm.expect(item).to.have.property(\"horaFin\");\r",
+									"            pm.expect(item).to.have.property(\"denominacion_ambi\");\r",
+									"            pm.expect(item).to.have.property(\"dniPers\");\r",
+									"           \r",
+									"        //Validacion del formato de fecha\r",
+									"       const regexFecha = /^\\d{2}-\\d{2}-\\d{4}$/;\r",
+									"       //validacion para la creacion\r",
+									"       if (item.fechaReserva) {\r",
+									"            pm.expect(item.fechaReserva).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validacion para la actualizacion\r",
+									"        if (item.fechaSolicitud) {\r",
+									"            pm.expect(item.fechaSolicitud).to.match(regexFecha);\r",
+									"        }\r",
+									"         if (item.fechaActualizacion) {\r",
+									"            pm.expect(item.fechaActualizacion).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validar formato de hora\r",
+									"        const regexHora = /^([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$/; \r",
+									"        //validar hora de inicio\r",
+									"        if (item.horaInicio) {\r",
+									"            pm.expect(item.horaInicio).to.match(regexHora);\r",
+									"        }\r",
+									"        //validar hora de fin\r",
+									"        if (item.horaFin) {\r",
+									"            pm.expect(item.horaFin).to.match(regexHora);\r",
+									"        }\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/reservas/",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"reservas",
+								""
+							]
+						},
+						"description": "Peticion que permite obtener todas las reservas"
+					},
+					"response": []
+				},
+				{
+					"name": "Obetener Reservas por Ambiente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"// Validar que los campos están presentes\r",
+									"pm.test(\"Los campos requeridos están presentes\", function () {\r",
+									"    const jsonData = pm.response.json(); // Parsear la respuesta como JSON\r",
+									"    pm.expect(jsonData).to.be.an(\"array\"); // Validar que la respuesta es un array\r",
+									"\r",
+									"    // Validar que cada objeto en el array tiene los campos requeridos\r",
+									"    jsonData.forEach((item) => {\r",
+									"        pm.expect(item).to.have.property(\"id\");\r",
+									"        pm.expect(item).to.have.property(\"personaId\");\r",
+									"        pm.expect(item).to.have.property(\"ambienteId\");\r",
+									"        pm.expect(item).to.have.property(\"fechaReserva\");\r",
+									"        pm.expect(item).to.have.property(\"fechaSolicitud\");\r",
+									"        pm.expect(item).to.have.property(\"fechaActualizacion\");\r",
+									"        pm.expect(item).to.have.property(\"totalRese\");\r",
+									"         pm.expect(item).to.have.property(\"pago_estadoRese\");\r",
+									"          pm.expect(item).to.have.property(\"horaInicio\");\r",
+									"           pm.expect(item).to.have.property(\"horaFin\");\r",
+									"            pm.expect(item).to.have.property(\"denominacion_ambi\");\r",
+									"            pm.expect(item).to.have.property(\"dniPers\");\r",
+									"           \r",
+									"        //Validacion del formato de fecha\r",
+									"       const regexFecha = /^\\d{2}-\\d{2}-\\d{4}$/;\r",
+									"       //validacion para la creacion\r",
+									"       if (item.fechaReserva) {\r",
+									"            pm.expect(item.fechaReserva).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validacion para la actualizacion\r",
+									"        if (item.fechaSolicitud) {\r",
+									"            pm.expect(item.fechaSolicitud).to.match(regexFecha);\r",
+									"        }\r",
+									"         if (item.fechaActualizacion) {\r",
+									"            pm.expect(item.fechaActualizacion).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validar formato de hora\r",
+									"        const regexHora = /^([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$/; \r",
+									"        //validar hora de inicio\r",
+									"        if (item.horaInicio) {\r",
+									"            pm.expect(item.horaInicio).to.match(regexHora);\r",
+									"        }\r",
+									"        //validar hora de fin\r",
+									"        if (item.horaFin) {\r",
+									"            pm.expect(item.horaFin).to.match(regexHora);\r",
+									"        }\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/reservas/persona_ambiente",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"reservas",
+								"persona_ambiente"
+							]
+						},
+						"description": "Peticion que permite obetener las reservas ordenadas por Ambiente"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Reserva",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"// Validar que los campos están presentes\r",
+									"pm.test(\"Los campos requeridos están presentes\", function () {\r",
+									"    const jsonData = pm.response.json(); // Parsear la respuesta como JSON\r",
+									"   \r",
+									"        pm.expect(jsonData).to.have.property(\"id\");\r",
+									"        pm.expect(jsonData).to.have.property(\"personaId\");\r",
+									"        pm.expect(jsonData).to.have.property(\"ambienteId\");\r",
+									"        pm.expect(jsonData).to.have.property(\"fechaReserva\");\r",
+									"        pm.expect(jsonData).to.have.property(\"fechaSolicitud\");\r",
+									"        pm.expect(jsonData).to.have.property(\"fechaActualizacion\");\r",
+									"        pm.expect(jsonData).to.have.property(\"totalRese\");\r",
+									"         pm.expect(jsonData).to.have.property(\"pago_estadoRese\");\r",
+									"          pm.expect(jsonData).to.have.property(\"horaInicio\");\r",
+									"           pm.expect(jsonData).to.have.property(\"horaFin\");\r",
+									"            pm.expect(jsonData).to.have.property(\"denominacion_ambi\");\r",
+									"            pm.expect(jsonData).to.have.property(\"dniPers\");\r",
+									"           \r",
+									"        //Validacion del formato de fecha\r",
+									"       const regexFecha = /^\\d{2}-\\d{2}-\\d{4}$/;\r",
+									"       //validacion para la creacion\r",
+									"       if (jsonData.fechaReserva) {\r",
+									"            pm.expect(jsonData.fechaReserva).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validacion para la actualizacion\r",
+									"        if (jsonData.fechaSolicitud) {\r",
+									"            pm.expect(jsonData.fechaSolicitud).to.match(regexFecha);\r",
+									"        }\r",
+									"         if (jsonData.fechaActualizacion) {\r",
+									"            pm.expect(jsonData.fechaActualizacion).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validar formato de hora\r",
+									"        const regexHora = /^([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$/; \r",
+									"        //validar hora de inicio\r",
+									"        if (jsonData.horaInicio) {\r",
+									"            pm.expect(jsonData.horaInicio).to.match(regexHora);\r",
+									"        }\r",
+									"        //validar hora de fin\r",
+									"        if (jsonData.horaFin) {\r",
+									"            pm.expect(jsonData.horaFin).to.match(regexHora);\r",
+									"        }\r",
+									"    });\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n               \r\n                \"personaId\": \"004c4f09-ab28-4820-ac24-d7b775e92cc4\",\r\n                \"ambienteId\": \"828cf164-8963-4754-9617-5b605545d80a\",\r\n                \"fechaReserva\": \"28-12-2024\",\r\n                \"fechaSolicitud\": \"06-12-2024\",\r\n                \"totalRese\": 40,\r\n                \"pago_estadoRese\": \"Pendiente\",\r\n                \"horaInicio\": \"17:54:57\",\r\n                \"horaFin\": \"19:54:57\",\r\n                \"denominacion_ambi\": \"Canchita Fútbol 1\",\r\n                \"dniPers\": \"78720903\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/reservas/",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"reservas",
+								""
+							]
+						},
+						"description": "Peticion que permite crear una reserva"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Reserva",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validar que el codigo de respuesta\r",
+									"pm.test(\"Estado de respuesta es 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"//validar el tiempo de respuesta debajo de 2 segundo\r",
+									"pm.test(\"Tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"// Validar que los campos están presentes\r",
+									"pm.test(\"Los campos requeridos están presentes\", function () {\r",
+									"    const jsonData = pm.response.json(); // Parsear la respuesta como JSON\r",
+									"   \r",
+									"        pm.expect(jsonData).to.have.property(\"id\");\r",
+									"        pm.expect(jsonData).to.have.property(\"personaId\");\r",
+									"        pm.expect(jsonData).to.have.property(\"ambienteId\");\r",
+									"        pm.expect(jsonData).to.have.property(\"fechaReserva\");\r",
+									"        pm.expect(jsonData).to.have.property(\"fechaSolicitud\");\r",
+									"        pm.expect(jsonData).to.have.property(\"fechaActualizacion\");\r",
+									"        pm.expect(jsonData).to.have.property(\"totalRese\");\r",
+									"         pm.expect(jsonData).to.have.property(\"pago_estadoRese\");\r",
+									"          pm.expect(jsonData).to.have.property(\"horaInicio\");\r",
+									"           pm.expect(jsonData).to.have.property(\"horaFin\");\r",
+									"            pm.expect(jsonData).to.have.property(\"denominacion_ambi\");\r",
+									"            pm.expect(jsonData).to.have.property(\"dniPers\");\r",
+									"           \r",
+									"        //Validacion del formato de fecha\r",
+									"       const regexFecha = /^\\d{2}-\\d{2}-\\d{4}$/;\r",
+									"       //validacion para la creacion\r",
+									"       if (jsonData.fechaReserva) {\r",
+									"            pm.expect(jsonData.fechaReserva).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validacion para la actualizacion\r",
+									"        if (jsonData.fechaSolicitud) {\r",
+									"            pm.expect(jsonData.fechaSolicitud).to.match(regexFecha);\r",
+									"        }\r",
+									"         if (jsonData.fechaActualizacion) {\r",
+									"            pm.expect(jsonData.fechaActualizacion).to.match(regexFecha);\r",
+									"        }\r",
+									"        //validar formato de hora\r",
+									"        const regexHora = /^([01]\\d|2[0-3]):([0-5]\\d):([0-5]\\d)$/; \r",
+									"        //validar hora de inicio\r",
+									"        if (jsonData.horaInicio) {\r",
+									"            pm.expect(jsonData.horaInicio).to.match(regexHora);\r",
+									"        }\r",
+									"        //validar hora de fin\r",
+									"        if (jsonData.horaFin) {\r",
+									"            pm.expect(jsonData.horaFin).to.match(regexHora);\r",
+									"        }\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n                \"id\": \"993c999b-3bdf-4474-9fab-73b8509b61be\",\r\n                \"personaId\": \"004c4f09-ab28-4820-ac24-d7b775e92cc4\",\r\n                \"ambienteId\": \"828cf164-8963-4754-9617-5b605545d80a\",\r\n                \"fechaReserva\": \"11-12-2024\",\r\n                \"fechaSolicitud\": \"06-12-2024\",\r\n                \"totalRese\": 300,\r\n                \"pago_estadoRese\": \"Pendiente\",\r\n                \"horaInicio\": \"17:54:57\",\r\n                \"horaFin\": \"19:54:57\",\r\n                \"denominacion_ambi\": \"Canchita Fútbol 1\",\r\n                \"dniPers\": \"78720903\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/reservas/",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"reservas",
+								""
+							]
+						},
+						"description": "Peticion que permite actualizar una reserva pasando el id en el body"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Reserva",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-x0nz.onrender.com/v1/reservas/993c999b-3bdf-4474-9fab-73b8509b61be",
+							"protocol": "https",
+							"host": [
+								"api-x0nz",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"v1",
+								"reservas",
+								"993c999b-3bdf-4474-9fab-73b8509b61be"
+							]
+						},
+						"description": "Peticion que permite eliminar una reserva pasando el id en la url"
+					},
+					"response": []
+				}
+			],
+			"description": "Contiene las peticiones a la API que permite la gestion del modulo de usuarios"
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
