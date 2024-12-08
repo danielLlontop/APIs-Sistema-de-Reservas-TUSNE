@@ -100,7 +100,7 @@ Cuerpo de la respuesta (JSON):
 
 "nombrePers": "CRISTHYN OFELIA", (String)
 
-"dniPers": "75007454", (String)
+"dniPers": "12345678", (String)
 
 "cargoPers": "jefe", (String)
 
@@ -114,7 +114,7 @@ Cuerpo de la respuesta (JSON):
 
 "correoPers": "<user@gmail.com>", (String)
 
-"telefonoPers": 927994593, (integer)
+"telefonoPers": 123456789, (integer)
 
 "fecha_registroPers": "21-11-2024", (Date: DD/MM/YY)
 
@@ -148,7 +148,7 @@ Cuerpo de la respuesta (JSON):
 
 "nombrePers": "CRISTHYN OFELIA", (String)
 
-"dniPers": "75007454", (String)
+"dniPers": "12345678", (String)
 
 "cargoPers": "jefe", (String)
 
@@ -162,7 +162,7 @@ Cuerpo de la respuesta (JSON):
 
 "correoPers": "<user@gmail.com>", (String)
 
-"telefonoPers": 927994593, (integer)
+"telefonoPers": 123456789, (integer)
 
 "fecha_registroPers": "21-11-2024", (Date: DD/MM/YY)
 
@@ -194,7 +194,7 @@ Cuerpo de la solicitud (JSON):
 
 "nombrePers": "CRISTHYN OFELIA", (String)
 
-"dniPers": "75007454", (String)
+"dniPers": "12345678", (String)
 
 "cargoPers": "jefe", (String)
 
@@ -208,7 +208,7 @@ Cuerpo de la solicitud (JSON):
 
 "correoPers": "<user@gmail.com>", (String)
 
-"telefonoPers": 927994593, (integer)
+"telefonoPers": 123456789, (integer)
 
 "fecha_registroPers": "21-11-2024", (Date: DD/MM/YY)
 
@@ -242,7 +242,7 @@ Cuerpo de la solicitud (JSON):
 
 "nombrePers": "CRISTHYN OFELIA", (String)
 
-"dniPers": "75007454", (String)
+"dniPers": "12345678", (String)
 
 "cargoPers": "jefe", (String)
 
@@ -256,7 +256,7 @@ Cuerpo de la solicitud (JSON):
 
 "correoPers": "<user@gmail.com>", (String)
 
-"telefonoPers": 927994593, (integer)
+"telefonoPers": 123456789, (integer)
 
 "fecha_registroPers": "21-11-2024", (Date: DD/MM/YY)
 
@@ -426,7 +426,7 @@ Cuerpo de la solicitud (JSON):
 
 "denominacion_ambi": "Canchita Fútbol 1", (String)
 
-"dniPers": "78720903" (String)
+"dniPers": "12345678" (String)
 
 }
 
@@ -462,7 +462,7 @@ Cuerpo de la solicitud (JSON):
 
 "denominacion_ambi": "Canchita Fútbol 1", (String)
 
-"dniPers": "78720903" (String)
+"dniPers": "12345678" (String)
 
 }
 
